@@ -493,14 +493,17 @@ func TestTimeFromName(t *testing.T) {
 		want     time.Time
 		wantErr  bool
 	}{
-		{"foo-2014-05-04T14-44-33.555.log", time.Date(2014, 5, 4, 14, 44, 33, 555000000, time.UTC), false},
-		{"foo-2014-05-04T14-44-33.555", time.Time{}, true},
-		{"2014-05-04T14-44-33.555.log", time.Time{}, true},
+		{"foo-20140504144433.log", time.Date(2014, 5, 4, 14, 44, 33, 0, time.UTC), false},
+		// {"foo-2014-05-04T14-44-33.555.log", time.Date(2014, 5, 4, 14, 44, 33, 555000000, time.UTC), false},
+		{"foo-2014-05-04T14-44-33", time.Time{}, true},
+		{"2014-05-04T14-44-33.log", time.Time{}, true},
 		{"foo.log", time.Time{}, true},
 	}
 
 	for _, test := range tests {
+		t.Log(test.filename, prefix, ext)
 		got, err := l.timeFromName(test.filename, prefix, ext)
+		t.Log(got, err)
 		equals(got, test.want, t)
 		equals(err != nil, test.wantErr, t)
 	}

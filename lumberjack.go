@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	backupTimeFormat = "200601020405"
+	backupTimeFormat = "20060102150405"
 	compressSuffix   = ".gz"
 	defaultMaxSize   = 100
 )
@@ -247,8 +247,11 @@ func (l *Logger) openNew() error {
 func backupName(name string, local bool) string {
 	dir := filepath.Dir(name)
 	filename := filepath.Base(name)
-	ext := filepath.Ext(filename)
-	prefix := filename[:len(filename)-len(ext)]
+	// ext := filepath.Ext(filename)
+	prefix := strings.Split(filename, ".")[0]
+	ext := ".log"
+	// prefix := filename[:len(filename)-len(ext)]
+
 	t := currentTime()
 	if !local {
 		t = t.UTC()
@@ -458,8 +461,10 @@ func (l *Logger) dir() string {
 // filename.
 func (l *Logger) prefixAndExt() (prefix, ext string) {
 	filename := filepath.Base(l.filename())
-	ext = filepath.Ext(filename)
-	prefix = filename[:len(filename)-len(ext)] + "-"
+	prefix = strings.Split(filename, ".")[0] + "-"
+	ext = ".log"
+	// ext = filepath.Ext(filename)
+	// prefix = filename[:len(filename)-len(ext)] + "-"
 	return prefix, ext
 }
 
